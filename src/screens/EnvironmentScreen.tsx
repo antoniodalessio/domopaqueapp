@@ -8,12 +8,13 @@ import {
 } from 'react-native'
 
 import Environment from './../model/environment'
+import Device from './../model/device'
+import Sensor from './../model/sensor'
 
 interface Props {}
 
 interface State {
-  temperature: number,
-  umidity: string,
+  environment: Environment
 }
 
 var { width } = Dimensions.get('window')
@@ -21,51 +22,66 @@ var { width } = Dimensions.get('window')
 class EnvironmentScreen extends React.Component<Props, State> {
   
   state: State = {
-    temperature: null,
-    umidity: null
+    environment: null
   }
 
   interval;
 
-  componentDidMount = () => {
-    this.interval = setInterval(async () => await this.getTempUmidity(), 1000)
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('envirnmentName'),
+    };
+  };
+
+  componentDidMount = async () => {
+    let environmentName = this.props.navigation.getParam('envirnmentName')
+    this.interval = setInterval(async () => await this.composeEnvironment(environmentName), 1000)
+    this.navigationOptions = {
+      title: environmentName,
+    }
   }
 
   componentWillUnmount = () => {
     clearInterval(this.interval)
   }
 
-  getTempUmidity = async () => {
+  composeEnvironment = async (environmentName) => {
 
-    let title = this.props.navigation.getParam('title')
-
-    let res = await fetch('http://rondinino.addns.org:3001/temp-umidity');
+    let res = await fetch(`http://rondinino.addns.org:3001/environments/${environmentName}`);
     res = await res.json();
     this.setState({
-      temperature: res[title].temperature,
-      umidity: res[title].umidity,
+      environment: res
+    })
+  }
+
+
+  _renderSensors = (sensors: Sensor[]) => {
+    return sensors.map((sensor) => {
+      return(
+        <View style={s.rowContainer} key={sensor.name}>
+          <View style={[s.cell]}>
+            <Text style={{fontWeight: 'bold'}}>{sensor.type}</Text>
+            <Text>{sensor.value}</Text>
+          </View>
+        </View>
+      )
+    })
+  }
+
+  _renderDevices = (devices:Device[]) => {
+    return devices.map((device) => {
+      return this._renderSensors(device.sensors)
     })
   }
 
   render() {
 
-    const { temperature, umidity } = this.state
+    const { environment } = this.state
 
     return (
       <View style={s.container}>
-          {temperature == null &&
-            <ActivityIndicator></ActivityIndicator>
-          }
-          {temperature != null &&
-          <View style={s.rowContainer}>
-            <View style={[s.cell, {backgroundColor: 'red'}]}>
-              <Text>Temperature: {temperature}° </Text>
-            </View>
-            <View style={[s.cell, {backgroundColor: 'green'}]}>
-              <Text>Umidity: {umidity}%</Text>
-            </View>
-          </View>
-          }
+          {environment && this._renderDevices(environment.devices)}
+          {!environment && <ActivityIndicator ></ActivityIndicator>}
       </View>
     )
   }
@@ -77,13 +93,17 @@ const s = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc'
   },
   cell: {
-    width: width/2,
+    flexDirection: 'row',
+    width: width,
     height: 40,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
   }
 
 })

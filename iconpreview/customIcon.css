@@ -1,0 +1,12 @@
+@font-face {
+	font-family: "customIcon";
+	src: url("customIcon.ttf?28c5154ea42d5fe001d3222a31c58009") format("truetype");
+}
+
+._icon {
+	font-family: customIcon !important;
+	font-style: normal;
+	font-weight: normal !important;
+	line-height: 1;
+	vertical-align: middle;
+}

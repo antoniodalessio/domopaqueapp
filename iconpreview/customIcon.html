@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>customIcon</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 10px 20px;
+			background: white;
+		}
+		.table {
+			display: table;
+			border-spacing: 0;
+		}
+		.preview {
+			display: table-row;
+			line-height: 2em;
+		}
+
+		td {
+			border: 1px solid #555;
+			padding: 2px 6px;
+		}
+		.preview__icon {
+			width: 52px;
+			font-size: 18px;
+			font-size: 18px;
+			text-align: center;
+		}
+		.preview__code {
+			box-sizing: border-box;
+			text-align: center;
+		}
+
+		.preview__code__label {
+			opacity: 0.3;
+			font-size: 14px;
+		}
+
+		@font-face {
+	font-family: "customIcon";
+	src: url("customIcon.ttf?23461fc4612f37af1e66ec897096e227") format("truetype");
+}
+
+._icon {
+	font-family: customIcon !important;
+	font-style: normal;
+	font-weight: normal !important;
+	line-height: 1;
+	vertical-align: middle;
+}
+	</style>
+</head>
+<body>
+	<h1>customIcon</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th></th><th>HTML</th><th>CSS</th><th>Filename</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="preview">
+				<td class="preview__icon">
+					<span class="_icon"></span>
+				</td>
+				<td class="preview__code">
+					&amp;#xe08f;
+				</td>
+				<td class="preview__code">
+					\e08f
+				</td>
+				<td>info</td>
+			</tr>
+			<tr class="preview">
+				<td class="preview__icon">
+					<span class="_icon"></span>
+				</td>
+				<td class="preview__code">
+					&amp;#xe090;
+				</td>
+				<td class="preview__code">
+					\e090
+				</td>
+				<td>light</td>
+			</tr>
+			<tr class="preview">
+				<td class="preview__icon">
+					<span class="_icon"></span>
+				</td>
+				<td class="preview__code">
+					&amp;#xe091;
+				</td>
+				<td class="preview__code">
+					\e091
+				</td>
+				<td>bulb</td>
+			</tr>
+			<tr class="preview">
+				<td class="preview__icon">
+					<span class="_icon"></span>
+				</td>
+				<td class="preview__code">
+					&amp;#xe092;
+				</td>
+				<td class="preview__code">
+					\e092
+				</td>
+				<td>paperplane</td>
+			</tr>
+			<tr class="preview">
+				<td class="preview__icon">
+					<span class="_icon"></span>
+				</td>
+				<td class="preview__code">
+					&amp;#xe093;
+				</td>
+				<td class="preview__code">
+					\e093
+				</td>
+				<td>dashboard</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
