@@ -1,10 +1,30 @@
 {
-  "lastCodepoint": 57491,
+  "lastCodepoint": 57511,
   "icons": {
     "info": 57487,
     "light": 57488,
     "bulb": 57489,
     "paperplane": 57490,
-    "dashboard": 57491
+    "dashboard": 57491,
+    "cord": 57492,
+    "cord1": 57493,
+    "google": 57494,
+    "google1": 57495,
+    "home": 57496,
+    "power-cord": 57497,
+    "power": 57498,
+    "socket": 57499,
+    "switch": 57500,
+    "switch1": 57501,
+    "sofa": 57502,
+    "sofa2": 57503,
+    "sofa3": 57504,
+    "aisle": 57505,
+    "veranda": 57506,
+    "celsius": 57507,
+    "temperature": 57508,
+    "umidity": 57509,
+    "umidity2": 57510,
+    "veranda-svgrepo-com": 57511
   }
 }

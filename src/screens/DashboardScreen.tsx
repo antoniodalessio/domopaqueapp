@@ -5,12 +5,17 @@ import {
   Text,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
+  RefreshControl,
 } from 'react-native'
+
+import { config } from './../config/config'
+import I18n from './../config/i18n';
 
 import IconFont from './../components/iconFont'
 
 import Environment from './../model/environment'
+
 
 interface Props {}
 
@@ -18,6 +23,7 @@ interface State {
   temperature: number,
   umidity: string,
   environments: Array<Environment>,
+  loading: boolean
 }
 
 
@@ -28,7 +34,8 @@ class DashboardScreen extends React.Component<Props, State> {
   state: State = {
     temperature: 0,
     umidity: '',
-    environments: []
+    environments: [],
+    loading: false
   }
 
   interval;
@@ -38,9 +45,36 @@ class DashboardScreen extends React.Component<Props, State> {
   };
 
   componentDidMount = async () => {
-    let environments = await fetch("http://rondinino.addns.org:3001/environments")
+    this.setState({loading: true})
+    await this.loadEnvironments();
+  }
+
+  async loadEnvironments() {
+    let environments = await fetch(`${config.basePathUrl}environments`)
     environments = await environments.json();
-    this.setState({environments: environments.environments})
+
+    environments = environments.environments.map((environment) => {
+      switch(environment.name){
+        case 'soggiorno':
+            environment.icon = 'sofa'
+            environment.iconSize = 50
+            environment.color = 'tomato'
+          break;
+        case 'veranda':
+            environment.icon = 'veranda'
+            environment.iconSize = 50
+            environment.color = 'tomato'
+          break;
+        case 'corridoio_piano_primo':
+            environment.icon = 'aisle'
+            environment.iconSize = 35
+            environment.color = 'tomato'
+          break;
+      }
+      return environment
+    })
+
+    this.setState({environments: environments, loading: false})
   }
 
   componentWillUnmount = () => {
@@ -60,13 +94,27 @@ class DashboardScreen extends React.Component<Props, State> {
     })
   }
 
+  onRefresh = async () => {
+    this.setState({loading: true})
+    await this.loadEnvironments();
+  }
+
   render() {
 
-    const { environments } = this.state
+    const { environments, loading } = this.state
 
     return (
       <View style={s.container}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl 
+              refreshing={loading}
+              onRefresh={this.onRefresh}
+              enabled={true}
+              progressViewOffset={100}
+            />
+          }
+        >
           
           <View style={s.grid}>
           {environments.length > 0 && environments.map((environment, index) => {
@@ -75,8 +123,8 @@ class DashboardScreen extends React.Component<Props, State> {
                 key={"button" + index} style={[s.gridButton]}
                 onPress={() => this.onPressEnvironment(environment) }
               >
-                <IconFont name="bulb" size={50} ></IconFont>
-                <Text>{environment.name}</Text>
+                <IconFont name={environment.icon} size={environment.iconSize} color={"white"} ></IconFont>
+                <Text style={{color: 'white'}}>{I18n.t(environment.name)}</Text>
               </TouchableOpacity>)
           })
           }
@@ -84,7 +132,7 @@ class DashboardScreen extends React.Component<Props, State> {
                 style={[s.gridButton, {backgroundColor: 'black'}]}
                 onPress={() => this.onPressGoogleHome() }
               >
-                <IconFont name="bulb" size={30} color={"#fff"}></IconFont>
+                <IconFont name="google" size={30} color={"#fff"}></IconFont>
                 <Text style={{color: 'white'}}>Google home</Text>
               </TouchableOpacity>
           </View>
@@ -105,7 +153,7 @@ const s = StyleSheet.create({
   gridButton: {
     width: width/2,
     height: width/2,
-    backgroundColor: '#ccc',
+    backgroundColor: 'tomato',
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#fff',

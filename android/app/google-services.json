@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "887791406040",
+    "firebase_url": "https://domopaque.firebaseio.com",
+    "project_id": "domopaque",
+    "storage_bucket": "domopaque.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:887791406040:android:4132bb4fa9a59f2581c0ad",
+        "android_client_info": {
+          "package_name": "com.domopaqueapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "887791406040-pu7ic013oe1fsahs5j7mavdg80q9clpa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC82ASZy11PMcX8wnk45SLGqlqe6Qm4QtY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "887791406040-8v6mo3qb9n37tlv405cui3j6tk8dls7k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,6 +7,9 @@ import {
   TextInput
 } from 'react-native'
 
+import { config } from './../config/config'
+import I18n from './../config/i18n';
+
 
 interface Props {}
 
@@ -22,7 +25,7 @@ class GoogleHomeScreen extends React.Component<Props, State> {
 
 
   sendToGoogle = async () => {
-    let res = await fetch(`http://rondinino.addns.org:3001/google-home`, {
+    let res = await fetch(`${config.basePathUrl}google-home`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

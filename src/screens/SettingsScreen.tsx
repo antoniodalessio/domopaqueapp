@@ -3,10 +3,17 @@ import {
   StyleSheet,
   View,
   Text,
-  ScrollView
+  ScrollView,
+  Switch,
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 
+import DeviceInfo from 'react-native-device-info';
 
+import KeyValueRow from '../components/keyValueRow'
+
+import AppStore from '../AppStore'
 
 interface Props {}
 
@@ -17,6 +24,10 @@ interface State {
 
 class SettingsScreen extends React.Component<Props, State> {
   
+  constructor() {
+    super()
+  }
+
   state: State = {
     
   }
@@ -26,7 +37,7 @@ class SettingsScreen extends React.Component<Props, State> {
   };
 
   componentDidMount = async () => {
-    
+    console.log(AppStore.fcmToken)
   }
 
   componentWillUnmount = () => {
@@ -35,14 +46,19 @@ class SettingsScreen extends React.Component<Props, State> {
 
   
   render() {
-
     return (
       <View style={s.container}>
         <ScrollView>
-          
-          <View style={s.grid}>
-            <Text>Settings</Text>
-          </View>
+
+          <KeyValueRow label="Lock with fingerprints" type="switch"></KeyValueRow>
+
+          <KeyValueRow odd={true} label="Lock with fingerprints" type="switch"></KeyValueRow>
+
+          <KeyValueRow label="Lock with fingerprints" type="switch"></KeyValueRow>
+
+          <TouchableOpacity style={s.button} onPress={() => { AppStore.sendLocalPushNotification() }}><Text>Local Notification (now)</Text></TouchableOpacity>
+
+          <Text>{DeviceInfo.getVersion()}</Text>
         </ScrollView>
       </View>
     )
@@ -52,11 +68,23 @@ class SettingsScreen extends React.Component<Props, State> {
 
 const s = StyleSheet.create({
   container: {},
-  grid: {
+  row: {
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
   },
+  rowOdd: {
+    backgroundColor: '#eee'
+  },
+  button: {
+    backgroundColor: 'tomato'
+  }
 })
 
 export default SettingsScreen

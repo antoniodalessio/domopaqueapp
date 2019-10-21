@@ -36,6 +36,10 @@ target 'domopaqueapp' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'react-native-fingerprint-scanner', :path => '../node_modules/react-native-fingerprint-scanner'
+
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
   target 'domopaqueappTests' do
     inherit! :search_paths
     # Pods for testing

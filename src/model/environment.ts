@@ -6,6 +6,10 @@ interface Environment {
     type: string,
     ips: [],
     devices?: Device[],
+    icon?: string,
+    iconSize?: number,
+    iconColor?: string,
+    inside?: boolean
 }
 
 export default Environment;
