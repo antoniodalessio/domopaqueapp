@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.pusherman.networkinfo.RNNetworkInfoPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;

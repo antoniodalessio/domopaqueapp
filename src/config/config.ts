@@ -1,4 +1,9 @@
+
+import { BASE_PATH } from 'react-native-dotenv'
+
+console.log("BASE_PATH" + BASE_PATH)
+
 export const config = {
-    basePathUrl: `http://rondinino.addns.org:3001/api/`
-    //basePathUrl: `http://192.168.1.6:3001/api/`
+    basePathUrl: BASE_PATH,
+    baseApiPathUrl: BASE_PATH + "api/"
 }

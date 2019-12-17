@@ -5,7 +5,8 @@ import {
   Text,
   Dimensions,
   RefreshControl,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native'
 
 
@@ -17,6 +18,8 @@ import Device from './../model/device'
 import Sensor from './../model/sensor'
 
 import IconFont from './../components/iconFont'
+import Sensors from '../components/Sensors';
+import Actuators from '../components/Actuators';
 
 interface Props {}
 
@@ -24,9 +27,9 @@ interface State {
   environment: Environment
   name: string,
   loading: boolean,
+  pressed: boolean
 }
 
-var { width } = Dimensions.get('window')
 
 class EnvironmentScreen extends React.Component<Props, State> {
   
@@ -34,6 +37,7 @@ class EnvironmentScreen extends React.Component<Props, State> {
     environment: null,
     name: '',
     loading: false,
+    pressed: false,
   }
 
   props: Props
@@ -47,11 +51,18 @@ class EnvironmentScreen extends React.Component<Props, State> {
   };
 
   componentDidMount = async () => {
+  
     let environmentName = this.props.navigation.getParam('envirnmentName')
-    this.setState({name: environmentName, loading: true})
+    this.setState(
+      {
+        name: environmentName,
+        loading: true,
+      })
+    
+    await this.composeEnvironment(environmentName)
     this.interval = setInterval(
       async () => {
-        await this.composeEnvironment(environmentName)
+        //await this.composeEnvironment(environmentName)
       }, 1000)
   }
 
@@ -60,47 +71,13 @@ class EnvironmentScreen extends React.Component<Props, State> {
   }
 
   composeEnvironment = async (environmentName) => {
-    let res = await fetch(`${config.basePathUrl}environments/${environmentName}`);
+    let res = await fetch(`${config.baseApiPathUrl}home/environments/${environmentName}`);
     res = await res.json();
     this.setState({
       environment: res,
       loading: false,
     })
   }
-
-  _renderUnitOfMeasure = (type) => {
-    switch(type) {
-      case "temperature":
-        return "°C"
-      case "umidity":
-        return "%"
-    }
-  }
-
-  _renderIcon = (type) => {
-    switch(type) {
-      case "temperature":
-        return <IconFont name={"temperature"} size={30} color={"black"} ></IconFont>
-      case "umidity":
-        return <IconFont name={"umidity2"} size={30} color={"black"} ></IconFont>
-      case "raindrop":
-        return <IconFont name={"umidity"} size={30} color={"black"} ></IconFont>
-    }
-  }
-
-  _parseRaindrop = (value) => {
-    switch(value) {
-      case "very_dry_not_raining":
-        return 'It\'s Not raining'
-      case "not_raining":
-        return 'It\'s Not raining'
-      case "rain_warning":
-        return "It's going to rain"
-      case "flood":
-        return "diluvia"
-    }
-  }
-
 
   onRefresh = () => {
     this.setState({
@@ -109,42 +86,18 @@ class EnvironmentScreen extends React.Component<Props, State> {
     this.composeEnvironment(this.state.name)
   }
 
-
-  _renderSensors = (sensors: Sensor[]) => {
-
-    if (sensors.length % 2 != 0) {
-      sensors.push({
-        type: '',
-        name: '',
-        value: ''
-      })
-    }
-
-    return sensors.map((sensor) => {
-      return(
-        <View style={s.rowContainer} key={sensor.name}>
-          <View style={[s.cell]}>
-            <View style={s.metaContainer}>
-              {this._renderIcon(sensor.type)}
-              
-            </View>
-            {sensor.type == 'raindrop' &&
-              <Text style={{fontSize: 20}}>
-              {this._parseRaindrop(sensor.value)}
-              </Text>
-            }
-            {sensor.type != 'raindrop' &&
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}> {sensor.value} {this._renderUnitOfMeasure(sensor.type)}</Text>
-            }
-          </View>
-        </View>
-      )
-    })
-  }
-
+  
   _renderDevices = (devices:Device[]) => {
     return devices.map((device) => {
-      return this._renderSensors(device.sensors)
+      return (
+        <View key={device.name}>
+          {device.hasOwnProperty('error') &&
+            <Text>{I18n.t("device_unavailable")}</Text>
+          }
+          <Sensors key={"sensors_" + device.name} sensors={device.sensors}/>
+          <View style={s.spacer}></View>
+          <Actuators key={"actuators_" + device.name} actuators={device.actuators}/>
+        </View>)
     })
   }
 
@@ -164,8 +117,8 @@ class EnvironmentScreen extends React.Component<Props, State> {
             />
           }
         >
-          <View style={s.container}>
-        {environment && this._renderDevices(environment.devices)}
+        <View style={s.container}>
+          {environment && this._renderDevices(environment.devices)}
         </View>
         </ScrollView>
     )
@@ -175,38 +128,22 @@ class EnvironmentScreen extends React.Component<Props, State> {
 
 const s = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
+    //paddingHorizontal: 1,
   },
-  rowContainer: {
-    width: width/2,
-    flexDirection: 'row',
-    justifyContent: 'center',
+  btn: {
+    marginTop: 10,
+    backgroundColor: '#ccc',
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    flexWrap: 'wrap',
-    backgroundColor: '#eee'
+    justifyContent: 'center',
+    paddingHorizontal: 10, 
+    paddingVertical: 10, 
   },
-  metaContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  cell: {
-    width: width/2,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 10,
-    borderRightWidth: 1,
-    borderRightColor: '#ccc'
+  spacer: {
+    width: '100%',
+    paddingVertical: 10,
   }
 
 })
 
 export default EnvironmentScreen
+

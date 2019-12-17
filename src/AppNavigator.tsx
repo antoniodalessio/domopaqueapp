@@ -14,11 +14,14 @@ import DashboardScreen from './screens/DashboardScreen';
 import GoogleHomeScreen from './screens/GoogleHomeScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import OverviewScreen from './screens/OverviewScreen';
+import SceneryScreen from './screens/SceneryScreen';
+
+import TestReduxScreen from './screens/TestReduxScreen'
 
 
 const DashboardStack = createStackNavigator(
   {
-    Dashboard: DashboardScreen,
+    Dashboard: TestReduxScreen,
     Environment: EnvironmentScreen,
     GoogleHome: GoogleHomeScreen
   },
@@ -39,10 +42,19 @@ const OverviewStack = createStackNavigator(
   }
 )
 
+const SceneryStack = createStackNavigator(
+  {
+    Scenery: SceneryScreen
+  }
+)
+
+
+
 const MainStack = createBottomTabNavigator(
   {
     Dashboard: DashboardStack,
     Overview: OverviewStack,
+    Scenery: SceneryStack,
     Settings: SettingsStack,
   },
   {
@@ -57,6 +69,10 @@ const MainStack = createBottomTabNavigator(
         }
         if (routeName == "Settings") {
           return <Ionicons name={`ios-options`} size={25} color={tintColor} />;
+          
+        }
+        if (routeName == "Scenery") {
+          return <IconFont name={`power`} size={18} color={tintColor} />;
           
         }
       }

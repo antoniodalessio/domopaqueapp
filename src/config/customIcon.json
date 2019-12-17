@@ -1,5 +1,5 @@
 {
-  "lastCodepoint": 57511,
+  "lastCodepoint": 57514,
   "icons": {
     "info": 57487,
     "light": 57488,
@@ -25,6 +25,9 @@
     "temperature": 57508,
     "umidity": 57509,
     "umidity2": 57510,
-    "veranda-svgrepo-com": 57511
+    "veranda-svgrepo-com": 57511,
+    "moon": 57512,
+    "sun": 57513,
+    "backyard": 57514
   }
 }

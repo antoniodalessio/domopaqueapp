@@ -25,7 +25,8 @@ class GoogleHomeScreen extends React.Component<Props, State> {
 
 
   sendToGoogle = async () => {
-    let res = await fetch(`${config.basePathUrl}google-home`, {
+    let url = `${config.baseApiPathUrl}googlehome/speak`
+    let res = await fetch(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

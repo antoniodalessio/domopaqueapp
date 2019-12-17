@@ -40,6 +40,8 @@ target 'domopaqueapp' do
 
   pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
 
+  pod 'react-native-network-info', :path => '../node_modules/react-native-network-info'
+
   target 'domopaqueappTests' do
     inherit! :search_paths
     # Pods for testing

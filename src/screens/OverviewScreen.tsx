@@ -6,7 +6,10 @@ import {
   ScrollView
 } from 'react-native'
 
+import { LineChart, Grid, YAxis, XAxis } from 'react-native-svg-charts'
+
 import { config } from './../config/config'
+
 
 interface Props {}
 
@@ -15,6 +18,9 @@ interface State {
   outside: any,
 }
 
+const data = [ 50, 10, 40, 95, -4, -24, 85, 91, 35, 53, -53, 24, 50, -20, -80 ]
+const data2 = [ 60, 20, 30, 5, -8, -28, 86, 9, 3, 58, -53, 28, 58, -28, -40 ]
+const contentInset = { top: 20, bottom: 20 }
 
 class OverviewScreen extends React.Component<Props, State> {
   
@@ -27,50 +33,10 @@ class OverviewScreen extends React.Component<Props, State> {
     title: 'Domopaque Overview',
   };
 
+
+
   componentDidMount = async () => {
-    //await fetch(`${config.basePathUrl}refresh`)
-    let environments = await fetch(`${config.basePathUrl}environments`)
-    environments = await environments.json();
-
-    let stats = environments.environments.reduce((acc, currValue) => {
-      if (currValue.inside) {
-        acc.inside.push(currValue)
-      }else{
-        acc.outside.push(currValue)
-      }
-      return acc;
-    }, { inside: [], outside: []})
-
-    this.setState({
-      inside: {
-        temp: stats.inside.reduce((acc, curr) => {
-          console.log(parseFloat(curr.devices[0].sensors[0].value))
-          acc = acc + parseFloat(curr.devices[0].sensors[0].value); 
-          return acc 
-        }, 0)/stats.inside.length,
-
-        umidity: stats.inside.reduce((acc, curr) => {
-          console.log(parseFloat(curr.devices[0].sensors[1].value))
-          acc = acc + parseFloat(curr.devices[0].sensors[1].value); 
-          return acc 
-        }, 0)/stats.inside.length
-      },
-
-      outside: {
-        temp: stats.outside.reduce((acc, curr) => {
-          console.log(parseFloat(curr.devices[0].sensors[0].value))
-          acc = acc + parseFloat(curr.devices[0].sensors[0].value); 
-          return acc 
-        }, 0)/stats.outside.length,
-
-        umidity: stats.outside.reduce((acc, curr) => {
-          console.log(parseFloat(curr.devices[0].sensors[1].value))
-          acc = acc + parseFloat(curr.devices[0].sensors[1].value); 
-          return acc 
-        }, 0)/stats.outside.length
-      }
-    })
-
+    
   }
 
   componentWillUnmount = () => {
@@ -85,31 +51,35 @@ class OverviewScreen extends React.Component<Props, State> {
     console.log(inside)
 
     return (
-      <View style={s.container}>
-        <ScrollView>
-          <View style={s.grid}>
-            <Text>INSIDE</Text>
-            <View>
-              <Text>TEmperature</Text>
-              <Text>{inside.temp}</Text>
-            </View>
-            <View>
-              <Text>Umidity</Text>
-              <Text>{inside.umidity}</Text>
-            </View>
-          </View>
-          <View style={s.grid}>
-            <Text>OUTSIDE</Text>
-            <View>
-              <Text>TEmperature</Text>
-              <Text>{outside.temp}</Text>
-            </View>
-            <View>
-              <Text>Umidity</Text>
-              <Text>{outside.umidity}</Text>
-            </View>
-          </View>
-        </ScrollView>
+      <View style={{ height: 200, padding: 20 }}>
+        <View style={{ height: 200, flexDirection: 'row' }}>
+          <YAxis
+              data={ data }
+              contentInset={ contentInset }
+              svg={{
+                  fill: 'grey',
+                  fontSize: 10,
+              }}
+              numberOfTicks={ 10 }
+              formatLabel={ value => `${value}ºC` }
+          />
+          <LineChart
+              style={{ flex: 1, marginLeft: 16 }}
+              data={ data }
+              gridMin={ 0 }
+              svg={{ stroke: 'rgb(134, 65, 244)' }}
+              contentInset={ contentInset }
+          >
+            <Grid/>
+          </LineChart>
+        </View>
+        <XAxis
+            style={{ marginHorizontal: -10 }}
+            data={ data }
+            formatLabel={ (value, index) => index }
+            contentInset={{ left: 10, right: 10 }}
+            svg={{ fontSize: 10, fill: 'black' }}
+        />
       </View>
     )
   }

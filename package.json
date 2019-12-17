@@ -11,7 +11,11 @@
     "emulator": "cd /Users/antoniodalessio/Library/Android/sdk/emulator && emulator -avd LastNexus"
   },
   "dependencies": {
+    "EventEmitter": "^1.0.0",
     "body-parser": "^1.19.0",
+    "i": "^0.3.6",
+    "npm": "^6.13.1",
+    "prop-types": "^15.7.2",
     "react": "^16.8.1",
     "react-native": "0.61.1",
     "react-native-device-info": "^4.0.1",
@@ -19,24 +23,34 @@
     "react-native-fingerprint-scanner": "^3.0.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-i18n": "^2.0.15",
+    "react-native-network-info": "^5.2.1",
     "react-native-push-notification": "^3.1.9",
     "react-native-reanimated": "^1.3.0",
+    "react-native-svg": "^9.13.3",
+    "react-native-svg-charts": "^5.3.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.3",
-    "react-navigation-tabs": "^2.5.6"
+    "react-navigation-tabs": "^2.5.6",
+    "socket.io-client": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.0",
+    "@babel/plugin-proposal-decorators": "^7.7.4",
     "@babel/runtime": "^7.5.0",
     "@react-native-community/eslint-config": "^0.0.3",
+    "@types/react-redux": "^7.1.5",
     "babel-jest": "^24.1.0",
     "fs-extra": "^8.1.0",
     "icon.font": "^1.1.1",
     "jest": "^24.1.0",
     "metro-react-native-babel-preset": "^0.51.1",
     "path": "^0.12.7",
-    "react-test-renderer": "16.8.1"
+    "react-redux": "^7.1.3",
+    "react-test-renderer": "16.8.1",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-tools": "^3.2.0"
   },
   "jest": {
     "preset": "react-native"

@@ -11,6 +11,7 @@ import {
 
 import { config } from './../config/config'
 import I18n from './../config/i18n';
+import AppStore from '../AppStore'
 
 import IconFont from './../components/iconFont'
 
@@ -23,7 +24,8 @@ interface State {
   temperature: number,
   umidity: string,
   environments: Array<Environment>,
-  loading: boolean
+  loading: boolean,
+  log: String
 }
 
 
@@ -35,7 +37,8 @@ class DashboardScreen extends React.Component<Props, State> {
     temperature: 0,
     umidity: '',
     environments: [],
-    loading: false
+    loading: false,
+    log: ''
   }
 
   interval;
@@ -45,12 +48,28 @@ class DashboardScreen extends React.Component<Props, State> {
   };
 
   componentDidMount = async () => {
+
+    AppStore.eventEmitter.on('@home', () => { this.setState({log: this.state.log + 'sono nella rete di  casa\n'});  })
+    AppStore.eventEmitter.on('outOfHome', () => { this.setState({log: this.state.log + 'sono fuori la rete di casa\n'});  })
+
+    console.log(config)
+
     this.setState({loading: true})
     await this.loadEnvironments();
+
+    /*AppStore.socket.on('actuator change', (obj) => {
+      console.log(obj)
+      this.setState({
+        log: this.state.log + obj.name + ": " + obj.value + "\n"
+      })
+    })*/
+
   }
 
   async loadEnvironments() {
-    let environments = await fetch(`${config.basePathUrl}environments`)
+    console.log(`${config.baseApiPathUrl}home/environments`)
+    await fetch(`${config.baseApiPathUrl}home/refresh`)
+    let environments = await fetch(`${config.baseApiPathUrl}home/environments`)
     environments = await environments.json();
 
     environments = environments.environments.map((environment) => {
@@ -58,14 +77,24 @@ class DashboardScreen extends React.Component<Props, State> {
         case 'soggiorno':
             environment.icon = 'sofa'
             environment.iconSize = 50
-            environment.color = 'tomato'
+            environment.color = '#9c9c9c'
           break;
         case 'veranda':
             environment.icon = 'veranda'
             environment.iconSize = 50
-            environment.color = 'tomato'
+            environment.color = '#bababa'
           break;
+        case 'backyard':
+          environment.icon = 'backyard'
+          environment.iconSize = 50
+          environment.color = 'green'
+        break;
         case 'corridoio_piano_primo':
+            environment.icon = 'aisle'
+            environment.iconSize = 35
+            environment.color = '#bababa'
+          break;
+        case 'corridoio_piano_terra':
             environment.icon = 'aisle'
             environment.iconSize = 35
             environment.color = 'tomato'
@@ -101,7 +130,7 @@ class DashboardScreen extends React.Component<Props, State> {
 
   render() {
 
-    const { environments, loading } = this.state
+    const { environments, loading, log } = this.state
 
     return (
       <View style={s.container}>
@@ -120,7 +149,7 @@ class DashboardScreen extends React.Component<Props, State> {
           {environments.length > 0 && environments.map((environment, index) => {
             return (
               <TouchableOpacity 
-                key={"button" + index} style={[s.gridButton]}
+                key={"button" + index} style={[s.gridButton, {backgroundColor: environment.color}]}
                 onPress={() => this.onPressEnvironment(environment) }
               >
                 <IconFont name={environment.icon} size={environment.iconSize} color={"white"} ></IconFont>
@@ -135,6 +164,9 @@ class DashboardScreen extends React.Component<Props, State> {
                 <IconFont name="google" size={30} color={"#fff"}></IconFont>
                 <Text style={{color: 'white'}}>Google home</Text>
               </TouchableOpacity>
+          </View>
+          <View>
+            <Text>{log}</Text>
           </View>
         </ScrollView>
       </View>

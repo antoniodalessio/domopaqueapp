@@ -6,6 +6,7 @@ interface Environment {
     type: string,
     ips: [],
     devices?: Device[],
+    virtualActuators?: any,
     icon?: string,
     iconSize?: number,
     iconColor?: string,
