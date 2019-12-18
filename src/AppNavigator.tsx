@@ -1,9 +1,6 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import {
-  View,
-} from 'react-native'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import IconFont from './components/iconFont'
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,12 +13,12 @@ import SettingsScreen from './screens/SettingsScreen';
 import OverviewScreen from './screens/OverviewScreen';
 import SceneryScreen from './screens/SceneryScreen';
 
-import TestReduxScreen from './screens/TestReduxScreen'
+//import TestReduxScreen from './screens/TestReduxScreen'
 
 
 const DashboardStack = createStackNavigator(
   {
-    Dashboard: TestReduxScreen,
+    Dashboard: DashboardScreen,
     Environment: EnvironmentScreen,
     GoogleHome: GoogleHomeScreen
   },

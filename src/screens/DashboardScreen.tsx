@@ -9,8 +9,16 @@ import {
   RefreshControl,
 } from 'react-native'
 
-import { config } from './../config/config'
+// REDUX
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import fetchEnvironments from '../services/fetchEnvironments';
+import {getEnvironments, getEnvironmentsPending, getEnvironmentsError} from '../reducers/environments';
+
+
 import I18n from './../config/i18n';
+
+
 import AppStore from '../AppStore'
 
 import IconFont from './../components/iconFont'
@@ -18,13 +26,14 @@ import IconFont from './../components/iconFont'
 import Environment from './../model/environment'
 
 
-interface Props {}
+interface Props {
+  fetchEnvironments: any,
+  environments: any,
+  error, pending
+}
 
 interface State {
-  temperature: number,
-  umidity: string,
   environments: Array<Environment>,
-  loading: boolean,
   log: String
 }
 
@@ -34,14 +43,23 @@ var { width } = Dimensions.get('window')
 class DashboardScreen extends React.Component<Props, State> {
   
   state: State = {
-    temperature: 0,
-    umidity: '',
     environments: [],
-    loading: false,
     log: ''
   }
 
   interval;
+
+  constructor(props) {
+    super(props);
+    this.shouldComponentRender = this.shouldComponentRender.bind(this);
+  }
+
+  shouldComponentRender() {
+    const {pending} = this.props;
+    if(pending === false) return false;
+    // more tests
+    return true;
+}
 
   static navigationOptions = {
     title: 'Domopaque Dashboard',
@@ -52,27 +70,17 @@ class DashboardScreen extends React.Component<Props, State> {
     AppStore.eventEmitter.on('@home', () => { this.setState({log: this.state.log + 'sono nella rete di  casa\n'});  })
     AppStore.eventEmitter.on('outOfHome', () => { this.setState({log: this.state.log + 'sono fuori la rete di casa\n'});  })
 
-    console.log(config)
-
-    this.setState({loading: true})
-    await this.loadEnvironments();
-
-    /*AppStore.socket.on('actuator change', (obj) => {
-      console.log(obj)
-      this.setState({
-        log: this.state.log + obj.name + ": " + obj.value + "\n"
-      })
-    })*/
+    this.loadEnvironments()
 
   }
 
   async loadEnvironments() {
-    console.log(`${config.baseApiPathUrl}home/environments`)
-    await fetch(`${config.baseApiPathUrl}home/refresh`)
-    let environments = await fetch(`${config.baseApiPathUrl}home/environments`)
-    environments = await environments.json();
+    const { fetchEnvironments } = this.props;
+    fetchEnvironments();
+  }
 
-    environments = environments.environments.map((environment) => {
+  transformButtons = (environments) => {
+    environments = environments.map((environment) => {
       switch(environment.name){
         case 'soggiorno':
             environment.icon = 'sofa'
@@ -103,11 +111,11 @@ class DashboardScreen extends React.Component<Props, State> {
       return environment
     })
 
-    this.setState({environments: environments, loading: false})
+    return environments
   }
 
   componentWillUnmount = () => {
-    clearInterval(this.interval)
+    //clearInterval(this.interval)
   }
 
   onPressEnvironment = (environment) => {
@@ -124,20 +132,24 @@ class DashboardScreen extends React.Component<Props, State> {
   }
 
   onRefresh = async () => {
-    this.setState({loading: true})
+    //this.setState({loading: true})
     await this.loadEnvironments();
   }
 
   render() {
 
-    const { environments, loading, log } = this.state
+    const { log } = this.state
+
+    let {environments, error, pending} = this.props;
+
+    environments.length > 0 && (environments = this.transformButtons(environments))
 
     return (
       <View style={s.container}>
         <ScrollView
           refreshControl={
             <RefreshControl 
-              refreshing={loading}
+              refreshing={pending}
               onRefresh={this.onRefresh}
               enabled={true}
               progressViewOffset={100}
@@ -166,12 +178,14 @@ class DashboardScreen extends React.Component<Props, State> {
               </TouchableOpacity>
           </View>
           <View>
-            <Text>{log}</Text>
+            <Text>{log + " " + error}</Text>
           </View>
         </ScrollView>
       </View>
     )
   }
+
+    
 }
 
 
@@ -193,4 +207,20 @@ const s = StyleSheet.create({
   }
 })
 
-export default DashboardScreen
+
+const mapStateToProps = state => {
+  return {
+    error: getEnvironmentsError(state),
+    environments: getEnvironments(state),
+    pending: getEnvironmentsPending(state)
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchEnvironments: fetchEnvironments
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DashboardScreen);

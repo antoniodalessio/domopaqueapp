@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
-import items  from "./items";
+import { environmentsReducer }  from "./environments";
 
 // Combine reducers
-const itemApp = combineReducers({
-  items
+const reducersCombine = combineReducers({
+  environmentsReducer
 });
 
-export default itemApp;
+export default reducersCombine;

@@ -4,7 +4,6 @@ import {
   View,
   Text,
   Dimensions,
-  TouchableOpacity
 } from 'react-native'
 
 import Sensor from './../model/sensor'
@@ -41,7 +40,6 @@ class Sensors extends React.Component<Props, State> {
       case "humidity":
         return <IconFont name={"umidity2"} size={30} color={"black"} ></IconFont>
       case "lightSensor":
-        console.warn(value)
         if (value == "1") {
           return <IconFont name={"moon"} size={30} color={"black"} ></IconFont>
         }else{
