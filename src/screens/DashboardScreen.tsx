@@ -17,12 +17,8 @@ import {getEnvironments, getEnvironmentsPending, getEnvironmentsError} from '../
 
 
 import I18n from './../config/i18n';
-
-
 import AppStore from '../AppStore'
-
 import IconFont from './../components/iconFont'
-
 import Environment from './../model/environment'
 
 
@@ -55,9 +51,8 @@ class DashboardScreen extends React.Component<Props, State> {
   }
 
   shouldComponentRender() {
-    const {pending} = this.props;
+    const { pending } = this.props;
     if(pending === false) return false;
-    // more tests
     return true;
 }
 
@@ -132,15 +127,14 @@ class DashboardScreen extends React.Component<Props, State> {
   }
 
   onRefresh = async () => {
-    //this.setState({loading: true})
-    await this.loadEnvironments();
+    this.loadEnvironments();
   }
 
   render() {
 
     const { log } = this.state
 
-    let {environments, error, pending} = this.props;
+    let { environments, error, pending } = this.props;
 
     environments.length > 0 && (environments = this.transformButtons(environments))
 
