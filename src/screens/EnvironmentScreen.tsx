@@ -3,21 +3,19 @@ import {
   StyleSheet,
   View,
   Text,
-  Dimensions,
   RefreshControl,
-  ScrollView,
-  TouchableOpacity
+  ScrollView
 } from 'react-native'
 
 
 import { config } from './../config/config'
 import I18n from './../config/i18n';
 
+import { httpService } from '../services/httpServices'
+
 import Environment from './../model/environment'
 import Device from './../model/device'
-import Sensor from './../model/sensor'
 
-import IconFont from './../components/iconFont'
 import Sensors from '../components/Sensors';
 import Actuators from '../components/Actuators';
 
@@ -71,7 +69,7 @@ class EnvironmentScreen extends React.Component<Props, State> {
   }
 
   composeEnvironment = async (environmentName) => {
-    let res = await fetch(`${config.baseApiPathUrl}home/environments/${environmentName}`);
+    let res = await httpService(`${config.baseApiPathUrl}home/environments/${environmentName}`);
     res = await res.json();
     this.setState({
       environment: res,

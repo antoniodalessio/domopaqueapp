@@ -4,9 +4,7 @@ import {
   View,
   Text,
   ScrollView,
-  Switch,
   TouchableOpacity,
-  Alert,
   Dimensions
 } from 'react-native'
 
@@ -14,6 +12,7 @@ import IconFont from './../components/iconFont'
 
 import { config } from './../config/config'
 import I18n from './../config/i18n';
+import { httpService } from '../services/httpServices'
 var { width } = Dimensions.get('window')
 
 interface Props {}
@@ -34,7 +33,7 @@ class SceneryScreen extends React.Component<Props, State> {
   };
 
   componentDidMount = async () => {
-    let res = await fetch(`${config.baseApiPathUrl}scenery/`);
+    let res = await httpService(`${config.baseApiPathUrl}scenery/`);
     res = await res.json();
     this.setState({
       scenery: res
@@ -42,7 +41,7 @@ class SceneryScreen extends React.Component<Props, State> {
   }
 
   async put(url, params) {
-    return await fetch(url, {
+    return await httpService(url, {
       method: 'PUT',
       headers: {
         Accept: 'application/json',

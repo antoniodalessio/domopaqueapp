@@ -7,6 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
+    "reset-cache": "react-native start --reset-cache",
     "icon": "node scripts/icon.js --out-file",
     "emulator": "cd /Users/antoniodalessio/Library/Android/sdk/emulator && emulator -avd LastNexus"
   },

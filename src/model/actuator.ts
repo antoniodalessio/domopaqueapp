@@ -3,7 +3,8 @@ interface Actuator {
     type: string,
     value: string,
     state: boolean,
-    timestamp: string
+    timestamp: string,
+    friendlyName: string,
 }
 
 export default Actuator;

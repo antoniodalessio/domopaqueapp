@@ -1,18 +1,19 @@
 import {fetchEnvironmentsPending, fetchEnvironmentsSuccess, fetchEnvironmentsError} from '../actions';
 import { config } from './../config/config'
+import { httpService } from './httpServices'
 
 
 function fetchEnvironments() {
     return dispatch => {
         dispatch(fetchEnvironmentsPending());
-        fetch(`${config.baseApiPathUrl}home/refresh`)
+        httpService(`${config.baseApiPathUrl}home/refresh`)
             .then(res => res.json())
             .then(res => {
                 if (res.msg == "ok") {
                     return
                 }
             })
-            .then(() => fetch(`${config.baseApiPathUrl}home/environments`))
+            .then(() => httpService(`${config.baseApiPathUrl}home/environments`))
             .then(res => res.json())
             .then(res => {
                 if(res.error) {

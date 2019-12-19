@@ -7,6 +7,8 @@ import {
   TouchableOpacity
 } from 'react-native'
 
+import { httpService } from '../services/httpServices'
+
 import Actuator from './../model/actuator'
 import IconFont from './iconFont'
 
@@ -35,7 +37,7 @@ class Actuators extends React.Component<Props, State> {
   _interval;
 
   async post(url, params) {
-    return await fetch(url, {
+    return await httpService(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -79,7 +81,7 @@ class Actuators extends React.Component<Props, State> {
     
     try {
       let url = `${config.baseApiPathUrl}home/actuators/${name}`
-      let res:any = await fetch(url)
+      let res:any = await httpService(url)
       res = await res.json();
       return res.value
     } catch(e) {

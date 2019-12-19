@@ -8,7 +8,7 @@ import {
 } from 'react-native'
 
 import { config } from './../config/config'
-import I18n from './../config/i18n';
+import { httpService } from '../services/httpServices'
 
 
 interface Props {}
@@ -26,7 +26,7 @@ class GoogleHomeScreen extends React.Component<Props, State> {
 
   sendToGoogle = async () => {
     let url = `${config.baseApiPathUrl}googlehome/speak`
-    let res = await fetch(url, {
+    let res = await httpService(url, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
