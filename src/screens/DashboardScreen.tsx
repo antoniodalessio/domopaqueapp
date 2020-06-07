@@ -132,7 +132,7 @@ class DashboardScreen extends React.Component<Props, State> {
 
   render() {
 
-    const { log } = this.state
+    //const { log } = this.state
 
     let { environments, error, pending } = this.props;
 
@@ -171,8 +171,8 @@ class DashboardScreen extends React.Component<Props, State> {
                 <Text style={{color: 'white'}}>Google home</Text>
               </TouchableOpacity>
           </View>
-          <View>
-            <Text>{log + " " + error}</Text>
+          <View style={{padding: 20}}>
+            <Text>{error}</Text>
           </View>
         </ScrollView>
       </View>

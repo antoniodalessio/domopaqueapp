@@ -12,6 +12,9 @@ const en = {
     'backyard_main_light': 'Luce principale giardino',
     'backyard_door_light': 'Luce porta giardino',
     'notte': 'Night',
+    'sera': 'Afternoon',
+    'veranda_main_light': 'Main light',
+    'veranda_socket': 'Presa'
 }
 
 export default en;

@@ -6,6 +6,8 @@ import { NetworkInfo } from "react-native-network-info";
 import EventEmitter from 'EventEmitter';
 import io from 'socket.io-client';
 
+import { httpService } from './services/httpServices'
+
 
 class AppStore {
 
@@ -78,7 +80,7 @@ class AppStore {
 
       console.log("user", user);
 
-      await fetch(`${config.basePathUrl}store-user`,{
+      await httpService(`${config.basePathUrl}store-user`,{
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -97,6 +97,7 @@ class Actuators extends React.Component<Props, State> {
 
   async setActuatorState(name, state) {
     let url = `${config.baseApiPathUrl}home/actuators`
+    console.log(url)
     let params = {
       value: `${state}`,
       name: `${name}`

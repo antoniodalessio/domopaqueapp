@@ -110,7 +110,7 @@ export default class NotifService {
   }
 
   cancelNotif() {
-    PushNotification.cancelLocalNotifications({id: ''+this.lastId});
+    PushNotification.cancelLocalNotifications({id: '' + this.lastId});
   }
 
   cancelAll() {
